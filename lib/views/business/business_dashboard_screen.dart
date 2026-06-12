@@ -361,7 +361,8 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                                 child: LinearProgressIndicator(
                                   value: total > 0 ? count / total : 0,
                                   minHeight: 8,
-                                  backgroundColor: colorScheme.surfaceVariant,
+                                  backgroundColor:
+                                      colorScheme.surfaceContainerHighest,
                                   valueColor: AlwaysStoppedAnimation(
                                     Color.lerp(
                                       colorScheme.error,
@@ -386,7 +387,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),
@@ -407,7 +408,7 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                 'fr_FR',
               ).format(review.createdAt);
               return _ReviewCard(review: review, date: date);
-            }).toList(),
+            }),
             const SizedBox(height: 24),
 
             // Quick Actions
@@ -428,17 +429,17 @@ class _BusinessDashboardScreenState extends State<BusinessDashboardScreen> {
                 _ActionCard(
                   icon: Icons.edit_rounded,
                   label: 'Modifier profil',
-                  onTap: () {},
+                  onTap: () => context.go('/business/edit'),
                 ),
                 _ActionCard(
                   icon: Icons.comment_rounded,
                   label: 'Gérer les avis',
-                  onTap: () {},
+                  onTap: () => context.go('/business/reviews'),
                 ),
                 _ActionCard(
                   icon: Icons.bar_chart_rounded,
                   label: 'Statistiques détaillées',
-                  onTap: () {},
+                  onTap: () => context.go('/business/statistics'),
                 ),
                 _ActionCard(
                   icon: Icons.settings_rounded,
@@ -487,7 +488,7 @@ class _StatCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
+                color: color.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 20),
@@ -540,7 +541,7 @@ class _GrowthCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
+                color: color.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
@@ -589,7 +590,7 @@ class _SimpleLineChart extends StatelessWidget {
         data: data,
         maxValue: maxValue,
         color: colorScheme.primary,
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
       ),
       size: Size(double.infinity, chartHeight),
     );
@@ -619,7 +620,7 @@ class _LineChartPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final fillPaint = Paint()
-      ..color = color.withOpacity(0.1)
+      ..color = color.withValues(alpha: 0.1)
       ..style = PaintingStyle.fill;
 
     final gridPaint = Paint()

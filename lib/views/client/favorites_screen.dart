@@ -90,26 +90,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         child: _favoriteController.isLoading
             ? const _FavoritesLoading()
             : favorites.isEmpty
-                ? const _EmptyFavoritesState()
-                : _viewMode == _FavoriteViewMode.list
-                    ? _FavoritesList(
-                        favorites: favorites,
-                        onRemove: _removeFavorite,
-                      )
-                    : _FavoritesGrid(
-                        favorites: favorites,
-                        onRemove: _removeFavorite,
-                      ),
+            ? const _EmptyFavoritesState()
+            : _viewMode == _FavoriteViewMode.list
+            ? _FavoritesList(favorites: favorites, onRemove: _removeFavorite)
+            : _FavoritesGrid(favorites: favorites, onRemove: _removeFavorite),
       ),
     );
   }
 }
 
 class _FavoritesList extends StatelessWidget {
-  const _FavoritesList({
-    required this.favorites,
-    required this.onRemove,
-  });
+  const _FavoritesList({required this.favorites, required this.onRemove});
 
   final List<BusinessModel> favorites;
   final ValueChanged<BusinessModel> onRemove;
@@ -139,10 +130,7 @@ class _FavoritesList extends StatelessWidget {
 }
 
 class _FavoritesGrid extends StatelessWidget {
-  const _FavoritesGrid({
-    required this.favorites,
-    required this.onRemove,
-  });
+  const _FavoritesGrid({required this.favorites, required this.onRemove});
 
   final List<BusinessModel> favorites;
   final ValueChanged<BusinessModel> onRemove;
@@ -166,13 +154,17 @@ class _FavoritesGrid extends StatelessWidget {
           direction: DismissDirection.up,
           background: const _DismissBackground(),
           onDismissed: (_) => onRemove(business),
-          child: _FavoriteGridCard(
-            business: business,
-            onRemove: () => onRemove(business),
-          ).animate().fadeIn(duration: 260.ms).scale(
-                begin: const Offset(0.96, 0.96),
-                end: const Offset(1, 1),
-              ),
+          child:
+              _FavoriteGridCard(
+                    business: business,
+                    onRemove: () => onRemove(business),
+                  )
+                  .animate()
+                  .fadeIn(duration: 260.ms)
+                  .scale(
+                    begin: const Offset(0.96, 0.96),
+                    end: const Offset(1, 1),
+                  ),
         );
       },
     );
@@ -180,10 +172,7 @@ class _FavoritesGrid extends StatelessWidget {
 }
 
 class _FavoriteListCard extends StatelessWidget {
-  const _FavoriteListCard({
-    required this.business,
-    required this.onRemove,
-  });
+  const _FavoriteListCard({required this.business, required this.onRemove});
 
   final BusinessModel business;
   final VoidCallback onRemove;
@@ -201,7 +190,7 @@ class _FavoriteListCard extends StatelessWidget {
         side: BorderSide(color: colorScheme.outlineVariant),
       ),
       child: InkWell(
-        onTap: () => context.go('/business/${business.id}'),
+        onTap: () => context.go('/home/business/${business.id}'),
         child: Row(
           children: [
             Hero(
@@ -254,10 +243,7 @@ class _FavoriteListCard extends StatelessWidget {
 }
 
 class _FavoriteGridCard extends StatelessWidget {
-  const _FavoriteGridCard({
-    required this.business,
-    required this.onRemove,
-  });
+  const _FavoriteGridCard({required this.business, required this.onRemove});
 
   final BusinessModel business;
   final VoidCallback onRemove;
@@ -285,10 +271,7 @@ class _FavoriteGridCard extends StatelessWidget {
                 children: [
                   Hero(
                     tag: 'business-cover-${business.id}',
-                    child: Image.network(
-                      business.imageUrl,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.network(business.imageUrl, fit: BoxFit.cover),
                   ),
                   Positioned(
                     right: 8,
@@ -348,11 +331,7 @@ class _RatingLine extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(
-          Icons.star_rounded,
-          color: colorScheme.tertiary,
-          size: 19,
-        ),
+        Icon(Icons.star_rounded, color: colorScheme.tertiary, size: 19),
         const SizedBox(width: 3),
         Text(
           business.rating.toStringAsFixed(1),
@@ -388,10 +367,7 @@ class _DismissBackground extends StatelessWidget {
         color: colorScheme.errorContainer,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Icon(
-        Icons.delete_rounded,
-        color: colorScheme.onErrorContainer,
-      ),
+      child: Icon(Icons.delete_rounded, color: colorScheme.onErrorContainer),
     );
   }
 }

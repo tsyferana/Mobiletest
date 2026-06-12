@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../repositories/user_repository.dart';
+import '../../routes/app_router.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   static const routeName = '/profile';
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final MockUserRecord _currentUser = const MockUserRecord(
     id: 'user-business-001',
     fullName: 'Aina Rajaonarivelo',
@@ -162,7 +164,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (shouldLogout == true) {
-      context.go('/login');
+      ref.read(authStateProvider.notifier).logout();
+      if (mounted) context.go('/login');
     }
   }
 
@@ -247,10 +250,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: isDark
-          ? [colorScheme.surfaceVariant.withOpacity(0.14), colorScheme.surface]
+          ? [
+              colorScheme.surfaceContainerHighest.withValues(alpha: 0.14),
+              colorScheme.surface,
+            ]
           : [
-              colorScheme.primaryContainer.withOpacity(0.18),
-              colorScheme.background,
+              colorScheme.primaryContainer.withValues(alpha: 0.18),
+              colorScheme.surface,
             ],
     );
 
@@ -374,9 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icons.history_rounded,
                         title: 'Historique des avis',
                         subtitle: 'Voir vos avis publiés',
-                        onTap: () => context.go(
-                          '/business/biz-001/reviews?mode=profile',
-                        ),
+                        onTap: () => context.go('/home/reviews/biz-001'),
                       ),
                       _ProfileSectionTile(
                         icon: Icons.favorite_outline_rounded,
@@ -396,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: Icons.storefront_rounded,
                           title: 'Mon entreprise',
                           subtitle: 'Gérer votre présence professionnelle',
-                          onTap: () => context.go('/business-dashboard'),
+                          onTap: () => context.go('/business/dashboard'),
                         ),
                       _ProfileSectionTile(
                         icon: Icons.headset_mic_rounded,
@@ -522,7 +526,7 @@ class _ProfileSectionTile extends StatelessWidget {
       dense: true,
       visualDensity: const VisualDensity(vertical: -1),
       leading: CircleAvatar(
-        backgroundColor: effectiveColor.withOpacity(0.12),
+        backgroundColor: effectiveColor.withValues(alpha: 0.12),
         child: Icon(icon, color: effectiveColor),
       ),
       title: Text(title, style: TextStyle(color: effectiveColor)),
@@ -530,7 +534,7 @@ class _ProfileSectionTile extends StatelessWidget {
         subtitle,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: foregroundColor != null
-              ? effectiveColor.withOpacity(0.85)
+              ? effectiveColor.withValues(alpha: 0.85)
               : colorScheme.onSurfaceVariant,
         ),
       ),

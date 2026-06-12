@@ -11,10 +11,7 @@ import '../../services/maps_sim_service.dart';
 import '../../services/mock_data_service.dart';
 
 class BusinessDetailScreen extends StatefulWidget {
-  const BusinessDetailScreen({
-    super.key,
-    this.businessId = 'biz-001',
-  });
+  const BusinessDetailScreen({super.key, this.businessId = 'biz-001'});
 
   static const routeName = '/business/:id';
 
@@ -59,9 +56,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
     final business = _business;
 
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (business == null) {
@@ -91,25 +86,16 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
                   ),
                   const SizedBox(height: 26),
                   _PhotoGallery(
-                    imageUrls: [
-                      business.imageUrl,
-                      ...business.galleryUrls,
-                    ],
+                    imageUrls: [business.imageUrl, ...business.galleryUrls],
                   ),
                   const SizedBox(height: 28),
                   _AboutSection(business: business),
                   const SizedBox(height: 28),
-                  _MiniMap(
-                    business: business,
-                    mapsService: _mapsService,
-                  ),
+                  _MiniMap(business: business, mapsService: _mapsService),
                   const SizedBox(height: 28),
                   _ServicesSection(services: business.services),
                   const SizedBox(height: 28),
-                  _ReviewsSection(
-                    businessId: business.id,
-                    reviews: _reviews,
-                  ),
+                  _ReviewsSection(businessId: business.id, reviews: _reviews),
                 ],
               ),
             ),
@@ -117,7 +103,7 @@ class _BusinessDetailScreenState extends State<BusinessDetailScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go('/business/${business.id}/reviews/new'),
+        onPressed: () => context.go('/home/reviews/${business.id}'),
         icon: const Icon(Icons.rate_review_rounded),
         label: const Text('Laisser un avis'),
       ),
@@ -231,10 +217,7 @@ class _BusinessHeader extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              Icons.place_outlined,
-              color: colorScheme.primary,
-            ),
+            Icon(Icons.place_outlined, color: colorScheme.primary),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -323,11 +306,7 @@ class _ActionButton extends StatelessWidget {
         children: [
           Icon(icon),
           const SizedBox(height: 4),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       ),
     );
@@ -443,10 +422,7 @@ class _AboutSection extends StatelessWidget {
 }
 
 class _MiniMap extends StatelessWidget {
-  const _MiniMap({
-    required this.business,
-    required this.mapsService,
-  });
+  const _MiniMap({required this.business, required this.mapsService});
 
   final BusinessModel business;
   final MapsSimService mapsService;
@@ -465,10 +441,7 @@ class _MiniMap extends StatelessWidget {
           child: SizedBox(
             height: 180,
             child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: position,
-                zoom: 15,
-              ),
+              initialCameraPosition: CameraPosition(target: position, zoom: 15),
               zoomControlsEnabled: false,
               myLocationButtonEnabled: false,
               scrollGesturesEnabled: false,
@@ -520,10 +493,7 @@ class _ServicesSection extends StatelessWidget {
 }
 
 class _ReviewsSection extends StatelessWidget {
-  const _ReviewsSection({
-    required this.businessId,
-    required this.reviews,
-  });
+  const _ReviewsSection({required this.businessId, required this.reviews});
 
   final String businessId;
   final List<ReviewModel> reviews;
@@ -537,7 +507,7 @@ class _ReviewsSection extends StatelessWidget {
           children: [
             const Expanded(child: _SectionTitle(title: 'Derniers avis')),
             TextButton(
-              onPressed: () => context.go('/business/$businessId/reviews'),
+              onPressed: () => context.go('/home/reviews/$businessId'),
               child: const Text('Voir tous les avis'),
             ),
           ],
@@ -634,10 +604,7 @@ class _ReviewTile extends StatelessWidget {
 }
 
 class _RatingStars extends StatelessWidget {
-  const _RatingStars({
-    required this.rating,
-    this.size = 20,
-  });
+  const _RatingStars({required this.rating, this.size = 20});
 
   final double rating;
   final double size;
@@ -653,14 +620,10 @@ class _RatingStars extends StatelessWidget {
         final icon = rating >= starValue
             ? Icons.star_rounded
             : rating >= starValue - 0.5
-                ? Icons.star_half_rounded
-                : Icons.star_border_rounded;
+            ? Icons.star_half_rounded
+            : Icons.star_border_rounded;
 
-        return Icon(
-          icon,
-          color: colorScheme.tertiary,
-          size: size,
-        );
+        return Icon(icon, color: colorScheme.tertiary, size: size);
       }),
     );
   }
@@ -706,9 +669,9 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w800,
-          ),
+      style: Theme.of(
+        context,
+      ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
     );
   }
 }

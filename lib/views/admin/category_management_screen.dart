@@ -14,7 +14,7 @@ class CategoryManagementScreen extends StatefulWidget {
 class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
   late List<_CategoryModel> _categories;
 
-  static const List<IconData> _availableIcons = [
+  static final List<IconData> _availableIcons = [
     Icons.restaurant_rounded,
     Icons.hotel_rounded,
     Icons.shopping_bag_rounded,
@@ -24,9 +24,9 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
     Icons.local_bar_rounded,
     Icons.coffee_rounded,
     Icons.local_parking_rounded,
-    Icons.auto_repair_rounded,
+    Icons.build_rounded,
     Icons.school_rounded,
-    Icons.hospital_rounded,
+    Icons.local_hospital_rounded,
     Icons.local_florist_rounded,
     Icons.local_pizza_rounded,
     Icons.local_see_rounded,
@@ -153,7 +153,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(
                                       context,
-                                    ).colorScheme.surfaceVariant,
+                                    ).colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(8),
                               border: isSelected
                                   ? Border.all(
@@ -300,7 +300,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(
                                       context,
-                                    ).colorScheme.surfaceVariant,
+                                    ).colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(8),
                               border: isSelected
                                   ? Border.all(
@@ -524,7 +524,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: category.color.withOpacity(0.2),
+                            color: category.color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Icon(

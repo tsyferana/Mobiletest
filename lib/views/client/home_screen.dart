@@ -79,55 +79,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ).animate().fadeIn(duration: 420.ms).slideY(begin: 0.08),
               ),
               SliverToBoxAdapter(
-                child: _BusinessSection(
-                  title: 'Meilleures notes',
-                  businesses: state.topRatedBusinesses,
-                ).animate().fadeIn(delay: 120.ms, duration: 420.ms).slideY(
-                      begin: 0.08,
-                    ),
+                child:
+                    _BusinessSection(
+                          title: 'Meilleures notes',
+                          businesses: state.topRatedBusinesses,
+                        )
+                        .animate()
+                        .fadeIn(delay: 120.ms, duration: 420.ms)
+                        .slideY(begin: 0.08),
               ),
               SliverToBoxAdapter(
-                child: _BusinessSection(
-                  title: 'Pres de vous',
-                  businesses: state.nearbyBusinesses,
-                ).animate().fadeIn(delay: 220.ms, duration: 420.ms).slideY(
-                      begin: 0.08,
-                    ),
+                child:
+                    _BusinessSection(
+                          title: 'Pres de vous',
+                          businesses: state.nearbyBusinesses,
+                        )
+                        .animate()
+                        .fadeIn(delay: 220.ms, duration: 420.ms)
+                        .slideY(begin: 0.08),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onNavigationSelected,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.search_rounded),
-            label: 'Search',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.favorite_border_rounded),
-            selectedIcon: Icon(Icons.favorite_rounded),
-            label: 'Favoris',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.notifications_none_rounded),
-            selectedIcon: Icon(Icons.notifications_rounded),
-            label: 'Notifs',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
-            label: 'Profil',
-          ),
-        ],
       ),
     );
   }
@@ -166,9 +140,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           const SizedBox(height: 2),
           Text(
             '📍 $city',
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
           ),
         ],
       ),
@@ -209,10 +181,7 @@ class _SearchEntry extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           child: Row(
             children: [
-              Icon(
-                Icons.search_rounded,
-                color: colorScheme.onSurfaceVariant,
-              ),
+              Icon(Icons.search_rounded, color: colorScheme.onSurfaceVariant),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -223,10 +192,7 @@ class _SearchEntry extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Icon(
-                Icons.tune_rounded,
-                color: colorScheme.onSurfaceVariant,
-              ),
+              Icon(Icons.tune_rounded, color: colorScheme.onSurfaceVariant),
             ],
           ),
         ),
@@ -291,10 +257,7 @@ class _CategoryCarousel extends StatelessWidget {
 }
 
 class _BusinessSection extends StatelessWidget {
-  const _BusinessSection({
-    required this.title,
-    required this.businesses,
-  });
+  const _BusinessSection({required this.title, required this.businesses});
 
   final String title;
   final List<BusinessModel> businesses;
@@ -356,7 +319,7 @@ class _BusinessCard extends StatelessWidget {
           side: BorderSide(color: colorScheme.outlineVariant),
         ),
         child: InkWell(
-          onTap: () => context.go('/business/${business.id}'),
+          onTap: () => context.go('/home/business/${business.id}'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -500,11 +463,7 @@ class _HomeSkeleton extends StatelessWidget {
 }
 
 class _SkeletonBox extends StatelessWidget {
-  const _SkeletonBox({
-    this.width,
-    required this.height,
-    required this.radius,
-  });
+  const _SkeletonBox({this.width, required this.height, required this.radius});
 
   final double? width;
   final double height;
@@ -515,17 +474,15 @@ class _SkeletonBox extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(radius),
-      ),
-    ).animate(onPlay: (controller) => controller.repeat(reverse: true)).fade(
-          begin: 0.45,
-          end: 1,
-          duration: 720.ms,
-        );
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        )
+        .animate(onPlay: (controller) => controller.repeat(reverse: true))
+        .fade(begin: 0.45, end: 1, duration: 720.ms);
   }
 }
 
@@ -549,10 +506,7 @@ class _HomeError extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            FilledButton(
-              onPressed: onRetry,
-              child: const Text('Reessayer'),
-            ),
+            FilledButton(onPressed: onRetry, child: const Text('Reessayer')),
           ],
         ),
       ),

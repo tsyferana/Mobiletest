@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,9 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacementNamed(
-      hasSeenOnboarding ? '/home' : '/onboarding',
-    );
+    context.go(hasSeenOnboarding ? '/home' : '/onboarding');
   }
 
   @override
@@ -61,28 +60,30 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Hero(
-                  tag: 'review-app-logo',
-                  child: Container(
-                    width: 104,
-                    height: 104,
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary,
-                      borderRadius: BorderRadius.circular(28),
-                      boxShadow: [
-                        BoxShadow(
-                          color: colorScheme.primary.withValues(alpha: 0.22),
-                          blurRadius: 32,
-                          offset: const Offset(0, 16),
+                      tag: 'review-app-logo',
+                      child: Container(
+                        width: 104,
+                        height: 104,
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary,
+                          borderRadius: BorderRadius.circular(28),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colorScheme.primary.withValues(
+                                alpha: 0.22,
+                              ),
+                              blurRadius: 32,
+                              offset: const Offset(0, 16),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.rate_review_rounded,
-                      color: colorScheme.onPrimary,
-                      size: 52,
-                    ),
-                  ),
-                )
+                        child: Icon(
+                          Icons.rate_review_rounded,
+                          color: colorScheme.onPrimary,
+                          size: 52,
+                        ),
+                      ),
+                    )
                     .animate()
                     .fadeIn(duration: 700.ms, curve: Curves.easeOutCubic)
                     .scale(
@@ -93,12 +94,12 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                 const SizedBox(height: 24),
                 Text(
-                  'ReviewApp',
-                  style: textTheme.headlineMedium?.copyWith(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w800,
-                  ),
-                )
+                      'ReviewApp',
+                      style: textTheme.headlineMedium?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    )
                     .animate(delay: 180.ms)
                     .fadeIn(duration: 500.ms)
                     .slideY(

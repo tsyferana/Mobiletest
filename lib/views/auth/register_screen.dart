@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../repositories/auth_repository.dart';
 import '../../repositories/user_repository.dart';
+import '../../routes/app_router.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   static const routeName = '/register';
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -82,15 +84,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!mounted) return;
 
     if (isRegistered) {
+      if (_accountType == MockAccountType.businessOwner) {
+        ref.read(authStateProvider.notifier).loginAsBusiness('new-biz-001');
+      } else {
+        ref.read(authStateProvider.notifier).loginAsClient('new-user-001');
+      }
       context.go('/home');
       return;
     }
 
     final message =
         _authController.errorMessage ?? 'Impossible de creer le compte.';
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -103,7 +110,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         leading: IconButton(
           tooltip: 'Retour',
           icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: _authController.isLoading ? null : () => context.go('/login'),
+          onPressed: _authController.isLoading
+              ? null
+              : () => context.go('/login'),
         ),
       ),
       body: SafeArea(
@@ -290,10 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Deja inscrit ?',
-                          style: textTheme.bodyMedium,
-                        ),
+                        Text('Deja inscrit ?', style: textTheme.bodyMedium),
                         TextButton(
                           onPressed: _authController.isLoading
                               ? null

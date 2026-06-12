@@ -117,10 +117,12 @@ class _SearchScreenState extends State<SearchScreen> {
     final query = _searchController.text.trim().toLowerCase();
 
     final results = _businesses.where((business) {
-      final matchesQuery = query.isEmpty ||
+      final matchesQuery =
+          query.isEmpty ||
           business.name.toLowerCase().contains(query) ||
           business.categoryName.toLowerCase().contains(query);
-      final matchesCategory = _selectedCategoryId == null ||
+      final matchesCategory =
+          _selectedCategoryId == null ||
           business.categoryId == _selectedCategoryId;
       final matchesCity = business.city == _selectedCity;
       final matchesRating = business.rating >= _minimumRating;
@@ -133,8 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
           matchesRating &&
           matchesDistance &&
           matchesOpenStatus;
-    }).toList()
-      ..sort((a, b) => a.distanceKm.compareTo(b.distanceKm));
+    }).toList()..sort((a, b) => a.distanceKm.compareTo(b.distanceKm));
 
     return results;
   }
@@ -193,8 +194,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Text(
                     '${filteredResults.length} resultats',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
                 SegmentedButton<_SearchViewMode>(
@@ -223,18 +224,17 @@ class _SearchScreenState extends State<SearchScreen> {
             child: _isLoading
                 ? const _SearchLoading()
                 : filteredResults.isEmpty
-                    ? const _EmptySearchState()
-                    : _viewMode == _SearchViewMode.map
-                        ? _BusinessMap(
-                            businesses: filteredResults,
-                            mapsService: _mapsService,
-                          )
-                        : _ResultsList(
-                            scrollController: _scrollController,
-                            results: _visibleResults,
-                            hasMore: _visibleResults.length <
-                                filteredResults.length,
-                          ),
+                ? const _EmptySearchState()
+                : _viewMode == _SearchViewMode.map
+                ? _BusinessMap(
+                    businesses: filteredResults,
+                    mapsService: _mapsService,
+                  )
+                : _ResultsList(
+                    scrollController: _scrollController,
+                    results: _visibleResults,
+                    hasMore: _visibleResults.length < filteredResults.length,
+                  ),
           ),
         ],
       ),
@@ -346,8 +346,10 @@ class _FiltersBar extends StatelessWidget {
               label: selectedCategoryId == null
                   ? 'Categorie'
                   : categories
-                      .firstWhere((category) => category.id == selectedCategoryId)
-                      .name,
+                        .firstWhere(
+                          (category) => category.id == selectedCategoryId,
+                        )
+                        .name,
             ),
           ),
           const SizedBox(width: 8),
@@ -400,10 +402,7 @@ class _FiltersBar extends StatelessWidget {
 }
 
 class _FilterChipShell extends StatelessWidget {
-  const _FilterChipShell({
-    required this.icon,
-    required this.label,
-  });
+  const _FilterChipShell({required this.icon, required this.label});
 
   final IconData icon;
   final String label;
@@ -468,7 +467,7 @@ class _SearchResultCard extends StatelessWidget {
         side: BorderSide(color: colorScheme.outlineVariant),
       ),
       child: InkWell(
-        onTap: () => context.go('/business/${business.id}'),
+        onTap: () => context.go('/home/business/${business.id}'),
         child: Row(
           children: [
             Hero(
@@ -593,10 +592,7 @@ class _OpenStatusPill extends StatelessWidget {
 }
 
 class _BusinessMap extends StatelessWidget {
-  const _BusinessMap({
-    required this.businesses,
-    required this.mapsService,
-  });
+  const _BusinessMap({required this.businesses, required this.mapsService});
 
   final List<BusinessModel> businesses;
   final MapsSimService mapsService;
@@ -608,10 +604,7 @@ class _BusinessMap extends StatelessWidget {
         : LatLng(businesses.first.latitude, businesses.first.longitude);
 
     return GoogleMap(
-      initialCameraPosition: CameraPosition(
-        target: initialPosition,
-        zoom: 13,
-      ),
+      initialCameraPosition: CameraPosition(target: initialPosition, zoom: 13),
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       markers: mapsService.buildBusinessMarkers(businesses),

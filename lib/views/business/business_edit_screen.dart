@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -37,8 +36,8 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
   late TextEditingController _addressController;
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
-  double _latitude = -18.8792;
-  double _longitude = 47.5079;
+  final double _latitude = -18.8792;
+  final double _longitude = 47.5079;
 
   // Step 3: Media
   String? _logoUrl;
@@ -56,7 +55,7 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
   };
 
   // Step 5: Services
-  List<Map<String, String>> _services = [
+  final List<Map<String, String>> _services = [
     {'name': 'Terrasse', 'price': '0'},
     {'name': 'Climatisation', 'price': '0'},
     {'name': 'Parking', 'price': '5000'},
@@ -136,7 +135,7 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
       await Future<void>.delayed(const Duration(milliseconds: 800));
 
       if (mounted) {
-        context.go('/business-dashboard');
+        context.go('/business/dashboard');
       }
     } catch (e) {
       if (mounted) {
@@ -424,7 +423,7 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
         centerTitle: false,
       ),
       body: Theme(
-        data: Theme.of(context).copyWith(useMaterial3: true),
+        data: Theme.of(context).copyWith(),
         child: Stepper(
           currentStep: _currentStep,
           onStepContinue: _isSubmitting ? null : _onStepContinue,
@@ -471,7 +470,7 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
 
                         final categories = snapshot.data!;
                         return DropdownButtonFormField<CategoryModel>(
-                          value: _selectedCategory ?? categories.first,
+                          initialValue: _selectedCategory ?? categories.first,
                           decoration: const InputDecoration(
                             labelText: 'Catégorie',
                             prefixIcon: Icon(Icons.category_rounded),
@@ -618,7 +617,9 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
                         width: double.infinity,
                         height: 140,
                         decoration: BoxDecoration(
-                          color: colorScheme.surfaceVariant.withOpacity(0.4),
+                          color: colorScheme.surfaceContainerHighest.withValues(
+                            alpha: 0.4,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: colorScheme.outlineVariant,
@@ -705,9 +706,8 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
                               borderRadius: BorderRadius.circular(12),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: colorScheme.surfaceVariant.withOpacity(
-                                    0.4,
-                                  ),
+                                  color: colorScheme.surfaceContainerHighest
+                                      .withValues(alpha: 0.4),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: colorScheme.outlineVariant,
@@ -731,7 +731,8 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
                           width: double.infinity,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: colorScheme.surfaceVariant.withOpacity(0.4),
+                            color: colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: colorScheme.outlineVariant,
@@ -913,7 +914,7 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
                           ),
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),
@@ -962,7 +963,7 @@ class _BusinessEditScreenState extends State<BusinessEditScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: _services.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        separatorBuilder: (_, _) => const SizedBox(height: 8),
                         itemBuilder: (context, index) {
                           final service = _services[index];
                           return Card(
